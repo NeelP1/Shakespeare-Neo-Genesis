@@ -27,7 +27,6 @@ public class Individual {
         }
     }
     
-    
 
     /**
      * Get a particular gene from an individual
@@ -97,6 +96,28 @@ public class Individual {
     	}
     	
     	setGenes(genesAsByteArr);
+    }
+    
+    
+    /**
+     * Helps add space characters to a random string.
+     * To be used with Option 2.
+     */
+    public void addSpacesToIndividualAlt(){
+    	//use while loop instead
+    	Random rand = new Random();
+    	
+    	int index = 0, randInt = 0;
+    	
+    	while(index < size()){
+        	randInt = (int) (rand.nextGaussian() * 4 + 5);
+    		randInt = randInt >= 1 ? randInt : 5;
+    		index += randInt;
+    		
+    		if(index < size()){
+    			genes[index] = (byte) 32;
+    		}
+    	}
     }
     
     /*Getters and Setters*/

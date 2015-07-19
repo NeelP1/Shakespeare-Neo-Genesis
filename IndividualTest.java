@@ -17,6 +17,7 @@ public class IndividualTest {
 		for(int i = 0; i < len; i++){
 			System.out.print((char)byteArr[i]);
 		}
+		System.out.println();
 	}
 
 	@Test
@@ -74,6 +75,16 @@ public class IndividualTest {
 		individual.setGene(0, (byte) 104);
 		individual.setGene(1, (byte) 105);
 		assertEquals("hi", individual.toString());
+	}
+	
+	
+	@Test
+	public void testAddSpacesToIndividualAlt(){
+		Individual individual = new Individual(16);
+		individual.generateIndividual();
+		individual.addSpacesToIndividualAlt();
+		System.out.println("Testing addSpacesToIndividualAlt:");
+		System.out.println(individual.toString());
 	}
 
 }

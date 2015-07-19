@@ -67,4 +67,6 @@ public class Population {
     public void saveIndividual(int index, Individual indiv) {
         individuals[index] = indiv;
     }
+    
+    
 }
