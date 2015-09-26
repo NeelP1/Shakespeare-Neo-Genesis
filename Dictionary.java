@@ -57,9 +57,10 @@ public class Dictionary extends InputOutput{
 	}
 	
 	/**
+	 * Returns true if wordList contains exact word
 	 * 
-	 * @param potentialWord
-	 * @return
+	 * @param  potentialWord
+	 * @return true if potentialWord is in wordList
 	 */
 	public boolean searchList(String potentialWord){
 		if(wordList.containsValue(potentialWord)){
@@ -91,12 +92,34 @@ public class Dictionary extends InputOutput{
 		return bestMatch;
 	}
 	
+	//TODO: change above method to return a object which holds a word (most similar word to approxWord),
+	//double (similarity score)
+	/**
+	 * Similar method to searchLikeWords but returns the best similarity score
+	 * 
+	 * @param  approxWord 
+	 * @return bestMatchScore
+	 */
+	public double getSimilarityScore(String approxWord){
+		double bestMatchScore = 0.0, temp = 0.0;
+		
+		for(int i = 0; i < wordListArr.length; i++){
+			temp = similarity(approxWord, wordListArr[i]);
+			if(temp > bestMatchScore){
+				bestMatchScore = temp;
+			}
+		}
+		
+		return bestMatchScore;
+	}
+	
+	
 	/**
 	 * Similarity between two strings
 	 * 
 	 * @param s1
 	 * @param s2
-	 * @return
+	 * @return long string length - distance(long string, short string) / long string length
 	 */
 	public double similarity(String s1, String s2) {
 		String longer = s1, shorter = s2;

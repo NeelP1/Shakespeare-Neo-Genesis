@@ -93,5 +93,23 @@ public class DictionaryTest {
 		assertEquals("bounce", dictionary.searchLikeWords("jbwoukje"));
 		
 	}
+	
+	@Test
+	public void getSimilarityScoreTest(){
+		Dictionary dictionary = new Dictionary();
+		String[] strArr = {"cat", "love", "bounce"};
+		HashMap<String, String> wordList = new HashMap<String, String>();
+		dictionary.setWordListArr(strArr);
+		
+		for(int i = 0; i < strArr.length; i++){
+			wordList.put(i + "", strArr[i]);
+		}
+		
+		dictionary.setWordList(wordList);
+		
+		System.out.println("getSimilarity test output: " + dictionary.getSimilarityScore("jakt"));
+		System.out.println("getSimilarity test output: " + dictionary.getSimilarityScore("k4;eo"));
+		System.out.println("getSimilarity test output: " + dictionary.getSimilarityScore("jbwoukje"));
+	}
 
 }

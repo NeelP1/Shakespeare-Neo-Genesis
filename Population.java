@@ -19,6 +19,7 @@ public class Population {
             for (int i = 0; i < size(); i++) {
                 Individual newIndividual = new Individual(stringLength);
                 newIndividual.generateIndividual();
+                newIndividual.addSpacesToIndividual();
                 saveIndividual(i, newIndividual);
             }
         }
@@ -63,9 +64,24 @@ public class Population {
     
     /**
      * Save individual
+     * 
+     * @param index	index to insert individual
+     * 		  indiv Individual to save
      */
     public void saveIndividual(int index, Individual indiv) {
         individuals[index] = indiv;
+    }
+    
+    public double getIndividualScore(int index){
+    	return individuals[index].getTotalScore();
+    }
+    
+    public void setIndividualScore(int index, double score){
+    	Individual tempIndividual = individuals[index];
+    	
+    	tempIndividual.setTotalScore(score);
+    	
+    	individuals[index] = tempIndividual;
     }
     
     

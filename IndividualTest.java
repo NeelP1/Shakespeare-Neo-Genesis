@@ -82,7 +82,7 @@ public class IndividualTest {
 	public void testAddSpacesToIndividualAlt(){
 		Individual individual = new Individual(16);
 		individual.generateIndividual();
-		individual.addSpacesToIndividualAlt();
+		individual.addSpacesToIndividual();
 		System.out.println("Testing addSpacesToIndividualAlt:");
 		System.out.println(individual.toString());
 	}

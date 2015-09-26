@@ -9,6 +9,7 @@ public class Individual {
     private int defaultGeneLength;//length of sentence
     private byte[] genes;
     private int fitness = 0;
+    private double totalScore = 0.0;
     
 
     public Individual(int length) {
@@ -103,7 +104,7 @@ public class Individual {
      * Helps add space characters to a random string.
      * To be used with Option 2.
      */
-    public void addSpacesToIndividualAlt(){
+    public void addSpacesToIndividual(){
     	//use while loop instead
     	Random rand = new Random();
     	
@@ -118,6 +119,12 @@ public class Individual {
     			genes[index] = (byte) 32;
     		}
     	}
+    }
+    
+    public String[] getArrayOfWords(){
+    	String[] wordsFromIndividual = toString().split(" ");
+    	
+    	return wordsFromIndividual;
     }
     
     /*Getters and Setters*/
@@ -140,6 +147,14 @@ public class Individual {
 
 	public void setFitness(int fitness) {
 		this.fitness = fitness;
+	}
+
+	public double getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(double totalScore) {
+		this.totalScore = totalScore;
 	}
 
 	@Override

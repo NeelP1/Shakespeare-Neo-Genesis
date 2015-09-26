@@ -85,6 +85,11 @@ public class ShakespeareGA extends InputOutput{
 	    		
 	    		dictionary.fillHashMap();
 	    		
+	    		for(int i = 0; i < MAX_GENERATIONS; i++){
+	    			
+	    		}
+	    		
+	    		
 	    		
 	    	}else{
 	    		System.out.println("no option was chosen, oops");
