@@ -63,6 +63,14 @@ public class Population {
     }
     
     /**
+     * 
+     * 
+     */
+    public void printArray(){
+    	
+    }
+    
+    /**
      * Save individual
      * 
      * @param index	index to insert individual

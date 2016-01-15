@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Sets solution, performs fitness calculations and reduces
  * the amount of code needed in main class (shakespeareGA.java).
@@ -45,7 +47,7 @@ public class FitnessCalc {
      */
     public static int getFitness(Individual individual) {
         int fitness = 0;
-        // Loop through our individuals genes and compare them to our cadidates
+        // Loop through our individuals genes and compare them to our candidates
         for (int i = 0; i < individual.size() && i < solution.length; i++) {
             if (individual.getGene(i) == solution[i]) {
                 fitness++;
@@ -64,5 +66,23 @@ public class FitnessCalc {
         int maxFitness = solution.length;
         
         return maxFitness;
+    }
+    
+    /**
+     * Function is need to create a solution length for option 2 of ShakespeareGA to 
+     * 
+     * @param lengthOfSolution
+     */
+    public static String createRandomSolution(int lengthOfSolution){
+    	char random_3_Char = ' ';
+    	String randomSolution = "";
+    	for(int i = 0; i < lengthOfSolution; i++){
+    		Random r = new Random();
+    	    random_3_Char = (char) (32 + r.nextInt(90));
+    	    //System.out.println(random_3_Char);
+    	    randomSolution += random_3_Char;
+    	}
+    	
+    	return randomSolution;
     }
 }

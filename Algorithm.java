@@ -22,6 +22,8 @@ public class Algorithm {
      */
     public static Population evolvePopulation(Population pop, int strLength) {
         Population newPopulation = new Population(pop.size(), false, strLength);
+        //TODO: do not allow tournament selection for second option as it
+        //uses getFitness() which tests Individuals against the solution 
         
         // Keep our best individual at index 0
         if (elitism) {
