@@ -87,11 +87,13 @@ public class Individual {
     
     //TODO: Have error checking before for loop
     /**
+     * Give the method a string which will be stored in the individual as an array of bytes
      * 
      * @param genes
      */
     public void setGenesWithString(String genesString){
     	byte[] genesAsByteArr = new byte[size()];
+    	
     	for(int i = 0; i < size() && i < genesString.length(); i++){
     		genesAsByteArr[i] = (byte)genesString.charAt(i);
     	}
@@ -111,16 +113,20 @@ public class Individual {
     	int index = 0, randInt = 0;
     	
     	while(index < size()){
-        	randInt = (int) (rand.nextGaussian() * 4 + 5);
+        	randInt = (int) (rand.nextGaussian() * 1 + 5);
     		randInt = randInt >= 1 ? randInt : 5;
     		index += randInt;
     		
-    		if(index < size()){
+    		if(index < size() && genes[index-1] != (byte) 32){
     			genes[index] = (byte) 32;
     		}
     	}
     }
     
+    /**
+     * 
+     * @return wordsFromIndividual
+     */
     public String[] getArrayOfWords(){
     	String[] wordsFromIndividual = toString().split(" ");
     	

@@ -1,10 +1,11 @@
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class IndividualTest {
 
-	@Test
+	@Ignore
 	public void testGenerateIndividual() {
 		int len = 8;
 		byte[] byteArr;
@@ -20,7 +21,7 @@ public class IndividualTest {
 		System.out.println();
 	}
 
-	@Test
+	@Ignore
 	public void testGetGeneChar() {
 		Individual individual = new Individual(2);
 		
@@ -31,7 +32,7 @@ public class IndividualTest {
 		assertEquals('i', individual.getGeneChar(1));
 	}
 
-	@Test
+	@Ignore
 	public void testGetGene() {
 		Individual individual = new Individual(2);
 		
@@ -50,7 +51,7 @@ public class IndividualTest {
 		individual.setGene(1, (byte) 105);
 	}
 
-	@Test
+	@Ignore
 	public void testSize() {
 		Individual individual = new Individual(2);
 		//individual.generateIndividual();
@@ -58,7 +59,7 @@ public class IndividualTest {
 		
 	}
 
-	@Test
+	@Ignore
 	public void testGetFitness() {
 		byte[] byteArr = {102, 103};
 		FitnessCalc.setSolution(byteArr);
@@ -69,7 +70,7 @@ public class IndividualTest {
 		assertEquals(0, individual.getFitness());
 	}
 
-	@Test
+	@Ignore
 	public void testToString() {
 		Individual individual = new Individual(2);
 		individual.setGene(0, (byte) 104);
@@ -80,7 +81,7 @@ public class IndividualTest {
 	
 	@Test
 	public void testAddSpacesToIndividualAlt(){
-		Individual individual = new Individual(16);
+		Individual individual = new Individual(100);
 		individual.generateIndividual();
 		individual.addSpacesToIndividual();
 		System.out.println("Testing addSpacesToIndividualAlt:");

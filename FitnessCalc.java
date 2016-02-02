@@ -24,7 +24,7 @@ public class FitnessCalc {
     }
     
     /**
-     * 
+     * Give the method a string which will be converted into byte array
      * 
      * @param newSolution
      */
@@ -84,5 +84,19 @@ public class FitnessCalc {
     	}
     	
     	return randomSolution;
+    }
+    
+    /**
+     * This message uses getTotalScore() method of Individual class
+     * 
+     * @param individual
+     * @return score
+     */
+    public static double getScore(Individual individual){
+    	double score = 0;
+        // Loop through our individuals genes and compare them to our candidates
+        score = individual.getTotalScore();
+      
+        return score;
     }
 }

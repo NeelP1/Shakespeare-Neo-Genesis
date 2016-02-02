@@ -147,7 +147,7 @@ public class Option2Test {
 		System.out.println("\nBest Individual: " + bestIndividualIndex);
 	}
 	
-	@Test
+	@Ignore
 	public void FitnessCalcTest(){
 		String randomSolution = "";
 				
@@ -158,8 +158,8 @@ public class Option2Test {
 	
 	@Test
 	public void IndividualMutateTest(){
-		final int MAX_GENERATIONS = 5;
-		int lengthOfString = 32, populationSize = 5;
+		final int MAX_GENERATIONS = 1;
+		int lengthOfString = 100, populationSize = 20;
 		String randomSolution = "";
 		
 		Population myPop = new Population(populationSize, true, lengthOfString);
@@ -169,7 +169,7 @@ public class Option2Test {
 		FitnessCalc.setSolution(randomSolution);
 		
 		try {
-			dictionary.fillWordListArr(dictionary.readFile("words.txt"));
+			dictionary.fillWordListArr(dictionary.readFile("google-10000-english-usa.txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -177,6 +177,7 @@ public class Option2Test {
 		}
 		
 		dictionary.fillHashMap();
+		Algorithm.setDictionary(dictionary);
 		
 		//splits individual into array of words
 		String[] arrayOfWords;
@@ -189,32 +190,40 @@ public class Option2Test {
 			for(int i = 0; i < populationSize; i++){
 				arrayOfWords = myPop.getIndividual(i).getArrayOfWords();
 				
-				System.out.println("\nIndividual: " + (i + 1));
+				System.out.println("\nIndividual: " + (i + 1) + ", " + myPop.getIndividual(i).toString());
 				
 				for(int j = 0; j < arrayOfWords.length; j++){
 					System.out.println(arrayOfWords[j] + " -> " + dictionary.getSimilarityScore(arrayOfWords[j]));
 					temp += dictionary.getSimilarityScore(arrayOfWords[j]);
 				}
 				
-				System.out.println("Total: " + temp);
-				
 				if(temp > topScore){
 					topScore = temp;
 					bestIndividualIndex = i + 1;
 				}
 				
+				myPop.setIndividualScore(i, temp);
+				System.out.println("Total: " + myPop.getIndividualScore(i));
+				
 				temp = 0;
 			}
 			
-			System.out.println("\nBest Individual: " + bestIndividualIndex);
-			myPop = Algorithm.evolvePopulation(myPop, lengthOfString);
-			//TODO: evolve best individual
-			
+			//System.out.println("\nBest Individual: " + bestIndividualIndex);
+			//evolve best scoring individual
+			myPop = Algorithm.evolvePopulation(myPop, lengthOfString, false);
+		}
+		//Note: the following uses getFittest()
+		
+		//TODO: get highest scoring individual and give it words from dictionary and match it with closest match
+		Individual bestIndividual = myPop.getIndividualWithHighestScore();
+		String[] bestIndividualWords = dictionary.returnLikeWordsArray(bestIndividual.getArrayOfWords());
+		//TODO: with the words structure sentence into meaningful English sentence by sorting and validating
+		System.out.println();
+		for(int i = 0; i < bestIndividualWords.length; i++){
+			System.out.print(bestIndividualWords[i] + " ");
 		}
 		
-		System.out.println("\nMax Fitness: " + FitnessCalc.getMaxFitness() + ", Fittest: " + myPop.getFittest().getFitness());
-        System.out.println("Genes:");
-        System.out.println(myPop.getFittest());
+		System.out.println("\nHighest Scoring Individual: " + bestIndividual + ", Score: " + bestIndividual.getTotalScore());
 	}
 	
 

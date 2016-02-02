@@ -92,8 +92,20 @@ public class Dictionary extends InputOutput{
 		return bestMatch;
 	}
 	
+	
 	//TODO: change above method to return a object which holds a word (most similar word to approxWord),
 	//double (similarity score)
+	public String[] returnLikeWordsArray(String [] approxWords){
+		String[] likeWordsArray = new String[approxWords.length];
+		
+		for(int i = 0; i < likeWordsArray.length; i++){
+			likeWordsArray[i] = searchLikeWords(approxWords[i]);
+		}
+		
+		return likeWordsArray;
+	}
+	
+	
 	/**
 	 * Similar method to searchLikeWords but returns the best similarity score
 	 * 

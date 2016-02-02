@@ -13,6 +13,7 @@ public class Algorithm {
     private static final double mutationRate = 0.015;//originally 0.015
     private static final int tournamentSize = 10;
     private static boolean elitism = true;
+    private static Dictionary dictionary;
     
     /**
      * Saves the fittest individual in the current population and then performs
@@ -23,9 +24,11 @@ public class Algorithm {
     public static Population evolvePopulation(Population pop, int strLength) {
         Population newPopulation = new Population(pop.size(), false, strLength);
         //TODO: do not allow tournament selection for second option as it
-        //uses getFitness() which tests Individuals against the solution 
+        //uses getFitness() which tests Individuals against the solution
         
-        // Keep our best individual at index 0
+        //Note: getFittest uses getFitness()
+        
+        //Keep our best individual at index 0
         if (elitism) {
             newPopulation.saveIndividual(0, pop.getFittest());
         }
@@ -40,8 +43,8 @@ public class Algorithm {
         // Loop over the population size and create new individuals with
         // crossover. New individuals saved in index one onwards.
         for (int i = elitismOffset; i < pop.size(); i++) {
-            Individual indiv1 = tournamentSelection(pop, strLength);
-            Individual indiv2 = tournamentSelection(pop, strLength);
+            Individual indiv1 = tournamentSelection(pop, strLength, true);
+            Individual indiv2 = tournamentSelection(pop, strLength, true);
             Individual newIndiv = crossover(indiv1, indiv2, strLength);
             newPopulation.saveIndividual(i, newIndiv);
         }
@@ -52,6 +55,90 @@ public class Algorithm {
         }
 
         return newPopulation;
+    }
+    
+    /**
+     * 
+     * 
+     * @param pop
+     * @param strLength
+     * @param isOptionOne
+     * @return
+     */
+    public static Population evolvePopulation(Population pop, int strLength, boolean isOptionOne) {
+        Population newPopulation = new Population(pop.size(), false, strLength);
+        
+        int elitismOffset;
+        if (elitism) {
+            elitismOffset = 1;
+        } else {
+            elitismOffset = 0;
+        }
+        
+        // Keep our best individual at index 0
+        if(isOptionOne){
+        	if (elitism) {
+                newPopulation.saveIndividual(0, pop.getFittest());
+            }
+            
+            // Loop over the population size and create new individuals with
+            // crossover. New individuals saved in index one onwards.
+            for (int i = elitismOffset; i < pop.size(); i++) {
+                Individual indiv1 = tournamentSelection(pop, strLength, isOptionOne);
+                Individual indiv2 = tournamentSelection(pop, strLength, isOptionOne);
+                Individual newIndiv = crossover(indiv1, indiv2, strLength);
+                newPopulation.saveIndividual(i, newIndiv);
+            }
+            
+            // Mutate population
+            for (int i = elitismOffset; i < newPopulation.size(); i++) {
+                mutate(newPopulation.getIndividual(i));
+            }
+        }else{
+            
+        	if (elitism) {
+                newPopulation.saveIndividual(0, pop.getIndividualWithHighestScore());
+            }
+        	
+            // Loop over the population size and create new individuals with
+            // crossover. New individuals saved in index one onwards.
+            for (int i = 0; i < pop.size(); i++) {
+                Individual indiv1 = tournamentSelection(pop, strLength, isOptionOne);
+                Individual indiv2 = tournamentSelection(pop, strLength, isOptionOne);
+                Individual newIndiv = checkForConsecutiveSpaces(crossover(indiv1, indiv2, strLength));
+                newIndiv.setTotalScore(Algorithm.calculateScore(newIndiv));
+                newPopulation.saveIndividual(i, newIndiv);
+            }
+            //1. find individual with highest score put in first position (Elitism)
+            //2. tournament without getFittest() then cross over all individuals randomly
+            //3. mutate
+            
+            // Mutate population
+            for (int i = 0; i < newPopulation.size(); i++) {
+                newPopulation.saveIndividual(i, checkForConsecutiveSpaces(mutate(newPopulation.getIndividual(i))));
+            }
+        }
+        
+        return newPopulation;
+    }
+    
+    /**
+     * Calculates score of individual and returns it as a double
+     * 
+     * @param indiv
+     * @return score
+     */
+    private static double calculateScore(Individual indiv){
+    	double temp = 0, score = 0;
+    	String[] words = indiv.getArrayOfWords();
+    	
+    	for(int i = 0; i < indiv.getArrayOfWords().length; i++){
+    		temp = dictionary.getSimilarityScore(words[i]);
+			score += temp;
+			temp = 0;
+		}
+    	
+    	return score;
     }
     
     /**
@@ -80,8 +167,9 @@ public class Algorithm {
      * Mutate an individual
      * 
      * @param indiv
+     * @return 
      */
-    private static void mutate(Individual indiv) {
+    private static Individual mutate(Individual indiv) {
         Random rand = new Random();
         // Loop through genes
         for (int i = 0; i < indiv.size(); i++) {
@@ -91,6 +179,8 @@ public class Algorithm {
                 indiv.setGene(i, gene);
             }
         }
+        
+        return indiv;
     }
     
     /**
@@ -100,7 +190,7 @@ public class Algorithm {
      * @param strLength
      * @return
      */
-    private static Individual tournamentSelection(Population pop, int strLength) {
+    private static Individual tournamentSelection(Population pop, int strLength, boolean isOptionOne) {
         // Create a tournament population
         Population tournament = new Population(tournamentSize, false, strLength);
         // For each place in the tournament get a random individual
@@ -108,8 +198,45 @@ public class Algorithm {
             int randomId = (int) (Math.random() * pop.size());
             tournament.saveIndividual(i, pop.getIndividual(randomId));//get a random individual from pop
         }
-        // Get the fittest
-        Individual fittest = tournament.getFittest();
-        return fittest;
+
+        if(isOptionOne){
+            // Get the fittest
+	        Individual fittest = tournament.getFittest();
+	        return fittest;
+        }else{
+        	Individual highestScoringIndividual = tournament.getIndividualWithHighestScore();
+        	//System.out.println("Test B: " + tournament.getIndividualWithHighestScore().getTotalScore());
+        	return highestScoringIndividual;
+        }
+    }
+    
+    /**
+     * Sets Dictionary object within Algorithm class
+     * 
+     * @param dict
+     */
+    public static void setDictionary(Dictionary dict){
+    	dictionary = dict;
+    }
+    
+    
+    private static Individual checkForConsecutiveSpaces(Individual indiv){
+    	byte[] genes = indiv.getGenes();
+    	//byte previousByte = genes[0];
+    	Random rand = new Random();
+    	byte newGene = ' ';
+    	Individual newIndividual = new Individual(indiv.getDefaultGeneLength());
+    	
+    	//TODO: add ternary operator (?) to genes[i] assignment
+    	for(int i = 1; i < genes.length; i++){
+    		if(genes[i] == (byte) 32 && genes[i - 1] == (byte) 32){
+    			newGene = (byte) (rand.nextInt(122-32) + 32);
+    			genes[i] = (byte) ((newGene == (byte) 32) ? 'e' : newGene);
+    		}
+    	}
+    	
+    	newIndividual.setGenes(genes);
+    	
+    	return newIndividual;
     }
 }

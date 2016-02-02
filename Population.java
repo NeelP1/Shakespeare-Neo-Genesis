@@ -63,14 +63,6 @@ public class Population {
     }
     
     /**
-     * 
-     * 
-     */
-    public void printArray(){
-    	
-    }
-    
-    /**
      * Save individual
      * 
      * @param index	index to insert individual
@@ -92,5 +84,15 @@ public class Population {
     	individuals[index] = tempIndividual;
     }
     
-    
+    public Individual getIndividualWithHighestScore() {
+        Individual individualWithHighestScore = individuals[0];
+        // Loop through individuals to find fittest
+        for (int i = 0; i < size(); i++) {
+            if (individualWithHighestScore.getTotalScore() <= getIndividual(i).getTotalScore()) {
+            	individualWithHighestScore = getIndividual(i);
+            }
+        }
+        
+        return individualWithHighestScore;
+    }
 }
