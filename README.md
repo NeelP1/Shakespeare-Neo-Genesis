@@ -1,4 +1,3 @@
-=============================
 Shakespeare Genetic Algorithm
 =============================
 
@@ -15,14 +14,12 @@ ShakespeareGA program
 ---------------------
 The programs objective is to use the genetic algorithm technique in order to reach the solution. The solution will be different each time as the program uses psuedo-artificial intelligence in order to find the solution. Genetic algorithms will perform optimization quicker than a brute force method.
 
+The program has two options to choose from:
+1. Give a string for program to replicate
+2. Produces English sentences using a genetic algorithm with 1000 most common words
 
-
-
-
-
-========================
-BUILD OUTPUT DESCRIPTION
-========================
+Build
+=====
 
 When you build an Java application project that has a main class, the IDE
 automatically copies all of the JAR
@@ -52,3 +49,15 @@ the projects runtime path.
 in the Projects window and choose Properties. Then click Run and enter the
 class name in the Main Class field. Alternatively, you can manually type the
 class name in the manifest Main-Class element.
+
+
+Run
+===
+
+Arguments
+---------
+args[0] - 1 (option 1)
+		- 2 (option 2)
+args[1] - filename of target solution (option 1)
+		- length of string (option 2)
+args[2] - maximum number of generations

@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /* 
  * package has InputOutput (readFile method included) class, Dictionary extends this
@@ -174,6 +176,48 @@ public class Dictionary extends InputOutput{
         }
         return costs[b.length()];
     }
+	
+	/**
+	 * Takes in an individual and returns an individual that has passed
+	 * through the correctErrorsInIndividuals method in the Population
+	 * class.
+	 * 
+	 * @param indiv
+	 * @return arrayOfWords
+	 */
+	public String[] correctErrorInIndividual(Individual indiv){
+		String[] arrayOfWords;
+		
+		Population tempPop = new Population(1, true, indiv.getDefaultGeneLength());
+		tempPop.saveIndividual(0, indiv);
+		arrayOfWords = returnLikeWordsArray(tempPop.getIndividual(0).getArrayOfWords());
+		indiv.setGenesWithString(arrayOfWords);
+		tempPop.correctErrorsInIndividuals();
+		arrayOfWords = tempPop.getIndividual(0).getArrayOfWords();
+		
+		return arrayOfWords;
+	}
+	
+	public String[] deleteUnecessaryWords(String [] wordsArray){
+		List<String> list = new ArrayList<String>();
+		//add some stuff
+		int count = 0;
+		
+		for(int i = 0; i < wordsArray.length; i++){
+			if(wordsArray[i].toCharArray().length == 1){
+				count++;
+				if(count < 3){
+					list.add(wordsArray[i]);
+				}
+			}else{
+				list.add(wordsArray[i]);
+			}
+		}
+		
+		String[] stringArray = list.toArray(new String[list.size()]);
+		
+		return stringArray;
+	}
 	
 	/*Getters and Setters*/
 

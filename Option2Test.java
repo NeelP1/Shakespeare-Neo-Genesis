@@ -158,8 +158,8 @@ public class Option2Test {
 	
 	@Test
 	public void IndividualMutateTest(){
-		final int MAX_GENERATIONS = 1;
-		int lengthOfString = 100, populationSize = 20;
+		final int MAX_GENERATIONS = 1;//TODO: should be parsed as an argument
+		int lengthOfString = 10, populationSize = 5;//TODO: should be parsed as an argument
 		String randomSolution = "";
 		
 		Population myPop = new Population(populationSize, true, lengthOfString);
@@ -169,7 +169,7 @@ public class Option2Test {
 		FitnessCalc.setSolution(randomSolution);
 		
 		try {
-			dictionary.fillWordListArr(dictionary.readFile("google-10000-english-usa.txt"));
+			dictionary.fillWordListArr(dictionary.readFile("1-1000.txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -182,7 +182,6 @@ public class Option2Test {
 		//splits individual into array of words
 		String[] arrayOfWords;
 		double topScore = 0, temp = 0;
-		int bestIndividualIndex = 0;
 		
 		for(int generation = 0; generation < MAX_GENERATIONS; generation++){
 			System.out.println("\nGeneration: " + (generation + 1));
@@ -199,7 +198,6 @@ public class Option2Test {
 				
 				if(temp > topScore){
 					topScore = temp;
-					bestIndividualIndex = i + 1;
 				}
 				
 				myPop.setIndividualScore(i, temp);
@@ -208,22 +206,30 @@ public class Option2Test {
 				temp = 0;
 			}
 			
-			//System.out.println("\nBest Individual: " + bestIndividualIndex);
 			//evolve best scoring individual
 			myPop = Algorithm.evolvePopulation(myPop, lengthOfString, false);
+			myPop.correctErrorsInIndividuals();
 		}
-		//Note: the following uses getFittest()
 		
-		//TODO: get highest scoring individual and give it words from dictionary and match it with closest match
+		//give all individuals scores
+		myPop.giveAllIndividualsScores();
+		
+		
+		//highest scoring individual and give it words from dictionary and match it with closest match
 		Individual bestIndividual = myPop.getIndividualWithHighestScore();
-		String[] bestIndividualWords = dictionary.returnLikeWordsArray(bestIndividual.getArrayOfWords());
+		System.out.println("\nHighest Scoring Individual: " + bestIndividual + ", Score: " + bestIndividual.getTotalScore());
+
+		String[] bestIndividualWords = dictionary.correctErrorInIndividual(bestIndividual);
+		bestIndividualWords = dictionary.deleteUnecessaryWords(bestIndividualWords);
 		//TODO: with the words structure sentence into meaningful English sentence by sorting and validating
+		//TODO: get a list of verbs, nouns, objects and have checking for simple sentences, compound sentences
+		//and complex sentences
+		//Parts of a simple sentence: Subject, Predicate, Clause, Phrase and Modifier
 		System.out.println();
 		for(int i = 0; i < bestIndividualWords.length; i++){
 			System.out.print(bestIndividualWords[i] + " ");
 		}
 		
-		System.out.println("\nHighest Scoring Individual: " + bestIndividual + ", Score: " + bestIndividual.getTotalScore());
 	}
 	
 

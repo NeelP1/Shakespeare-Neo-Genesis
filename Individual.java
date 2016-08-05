@@ -101,6 +101,27 @@ public class Individual {
     	setGenes(genesAsByteArr);
     }
     
+    /**
+     * Give the method a string array which will be stored in the individual as an array of bytes
+     * 
+     * @param wordArray
+     */
+    public void setGenesWithString(String [] wordArray){
+    	byte[] genesAsByteArr;
+    	String endResult = "";
+    	
+    	for(int i = 0; i < wordArray.length; i++){
+    		endResult += wordArray[i] + " ";
+    	}
+    	
+    	genesAsByteArr = new byte[endResult.length()];
+    	
+    	for(int i = 0; i < endResult.length(); i++){
+    		genesAsByteArr[i] = (byte)endResult.charAt(i);
+    	}
+    	
+    	setGenes(genesAsByteArr);
+    }
     
     /**
      * Helps add space characters to a random string.
@@ -113,11 +134,11 @@ public class Individual {
     	int index = 0, randInt = 0;
     	
     	while(index < size()){
-        	randInt = (int) (rand.nextGaussian() * 1 + 5);
+        	randInt = (int) (rand.nextGaussian() * 1.2 + 5);
     		randInt = randInt >= 1 ? randInt : 5;
     		index += randInt;
     		
-    		if(index < size() && genes[index-1] != (byte) 32){
+    		if(index < size() - 1 && genes[index-1] != (byte) 32 && genes[index + 1] != (byte) 32){
     			genes[index] = (byte) 32;
     		}
     	}

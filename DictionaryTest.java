@@ -111,5 +111,7 @@ public class DictionaryTest {
 		System.out.println("getSimilarity test output: " + dictionary.getSimilarityScore("k4;eo"));
 		System.out.println("getSimilarity test output: " + dictionary.getSimilarityScore("jbwoukje"));
 	}
+	
+	
 
 }

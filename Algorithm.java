@@ -95,6 +95,9 @@ public class Algorithm {
                 mutate(newPopulation.getIndividual(i));
             }
         }else{
+        	//1. find individual with highest score put in first position (Elitism)
+            //2. tournament without getFittest() then cross over all individuals randomly
+            //3. mutate
             
         	if (elitism) {
                 newPopulation.saveIndividual(0, pop.getIndividualWithHighestScore());
@@ -105,17 +108,14 @@ public class Algorithm {
             for (int i = 0; i < pop.size(); i++) {
                 Individual indiv1 = tournamentSelection(pop, strLength, isOptionOne);
                 Individual indiv2 = tournamentSelection(pop, strLength, isOptionOne);
-                Individual newIndiv = checkForConsecutiveSpaces(crossover(indiv1, indiv2, strLength));
+                Individual newIndiv = crossover(indiv1, indiv2, strLength);
                 newIndiv.setTotalScore(Algorithm.calculateScore(newIndiv));
                 newPopulation.saveIndividual(i, newIndiv);
             }
-            //1. find individual with highest score put in first position (Elitism)
-            //2. tournament without getFittest() then cross over all individuals randomly
-            //3. mutate
             
             // Mutate population
             for (int i = 0; i < newPopulation.size(); i++) {
-                newPopulation.saveIndividual(i, checkForConsecutiveSpaces(mutate(newPopulation.getIndividual(i))));
+                newPopulation.saveIndividual(i, mutate(newPopulation.getIndividual(i)));
             }
         }
         
@@ -128,7 +128,7 @@ public class Algorithm {
      * @param indiv
      * @return score
      */
-    private static double calculateScore(Individual indiv){
+    public static double calculateScore(Individual indiv){
     	double temp = 0, score = 0;
     	String[] words = indiv.getArrayOfWords();
     	
@@ -219,24 +219,4 @@ public class Algorithm {
     	dictionary = dict;
     }
     
-    
-    private static Individual checkForConsecutiveSpaces(Individual indiv){
-    	byte[] genes = indiv.getGenes();
-    	//byte previousByte = genes[0];
-    	Random rand = new Random();
-    	byte newGene = ' ';
-    	Individual newIndividual = new Individual(indiv.getDefaultGeneLength());
-    	
-    	//TODO: add ternary operator (?) to genes[i] assignment
-    	for(int i = 1; i < genes.length; i++){
-    		if(genes[i] == (byte) 32 && genes[i - 1] == (byte) 32){
-    			newGene = (byte) (rand.nextInt(122-32) + 32);
-    			genes[i] = (byte) ((newGene == (byte) 32) ? 'e' : newGene);
-    		}
-    	}
-    	
-    	newIndividual.setGenes(genes);
-    	
-    	return newIndividual;
-    }
 }
